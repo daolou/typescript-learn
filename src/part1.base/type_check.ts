@@ -124,4 +124,37 @@ if (padder instanceof StringPadder) {
   padder.getPaddingString(); // 类型细化为'StringPadder'
 }
 
+/**
+ * 类型兼容
+ * 基于结构子类型的（结构类型是一种只使用其成员来描述类型的方式）
+ * 不同于C#或Java基于名义类型的语言
+ * TypeScript的结构性子类型是根据JavaScript代码的典型写法来设计的
+ *
+ */
+// 对于结构：
+interface Named {
+  name: string;
+}
+
+class Person {
+  name: string;
+  age: number;
+}
+
+let p: Named = new Person();
+
+let x: Named;
+let y = { name: 'yy', location: 'bj' };
+x = y; // ok: y 可以赋值给 x
+// x的类型（Named）兼容y的类型（{name: string;location: string;}）
+// 成员少的兼容多的
+
+// 对于函数：
+let x1 = (a: number) => 0;
+let y1 = (b: number, s: string) => 0;
+
+y1 = x1; // ok x1 可以赋值给 y1
+// y1的类型（(b: number, s: string) => number）兼容x1的类型（(a: number) => number）
+// 参数多的兼容少的
+
 export {};
